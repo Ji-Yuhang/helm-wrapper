@@ -35,12 +35,6 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
-    - name: Login to ACR with the AccessKey pair
-      uses: aliyun/acr-login@v1
-      with:
-        region-id: "${{ env.REGION_ID }}"
-        access-key-id: "${{ secrets.ACCESS_KEY_ID }}"
-        access-key-secret: "${{ secrets.ACCESS_KEY_SECRET }}"
 
     - name: Get dependencies
       run: |
