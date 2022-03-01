@@ -1,5 +1,7 @@
 # FROM centos:7
-FROM scratch
+FROM alpine
+
+RUN apk --no-cache add ca-certificates
 
 ENV GIN_MODE=release
 
