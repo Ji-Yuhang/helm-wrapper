@@ -7,6 +7,10 @@ LDFLAGS="-s -w"
 build:
 	go build -ldflags ${LDFLAGS} -o bin/${BINARY_NAME} 
 
+# build docker from from scratch
+build-linux-scratch:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags ${LDFLAGS} -o bin/${BINARY_NAME}
+
 # cross compilation
 build-linux:
 	GOOS=linux GOARCH=amd64 go build -ldflags ${LDFLAGS} -o bin/${BINARY_NAME}
