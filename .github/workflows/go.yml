@@ -6,6 +6,18 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  REGION_ID: cn-hangzhou
+  REGISTRY: registry.cn-hangzhou.aliyuncs.com
+  NAMESPACE: ijx-static
+  IMAGE: helm-wrapper
+  TAG: ${{ github.sha }}
+
+  ACR_EE_REGISTRY: registry.cn-hangzhou.aliyuncs.com
+  ACR_EE_INSTANCE_ID: instanceID
+  ACR_EE_NAMESPACE: ijx-static
+  ACR_EE_IMAGE: helm-wrapper
+  ACR_EE_TAG: ${{ github.sha }}
 jobs:
 
   build:
@@ -21,6 +33,13 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
+    - name: Login to ACR with the AccessKey pair
+      uses: aliyun/acr-login@v1
+      with:
+        region-id: "${{ env.REGION_ID }}"
+        access-key-id: "${{ secrets.ACCESS_KEY_ID }}"
+        access-key-secret: "${{ secrets.ACCESS_KEY_SECRET }}"
+
     - name: Get dependencies
       run: |
         go get -v -t -d ./...
@@ -30,4 +49,11 @@ jobs:
         fi
 
     - name: Build
-      run: make build
+      id: make_build
+      run: make build"
+
+    - name: Build and push image to ACR EE
+      run: |
+        docker build -t "$ACR_EE_REGISTRY/$ACR_EE_NAMESPACE/$ACR_EE_IMAGE:$TAG" .
+        docker push "$ACR_EE_REGISTRY/$ACR_EE_NAMESPACE/$ACR_EE_IMAGE:$TAG"
+        echo "$ACR_EE_REGISTRY/$ACR_EE_NAMESPACE/$ACR_EE_IMAGE:$TAG"
