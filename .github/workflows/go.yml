@@ -7,13 +7,15 @@ on:
     branches: [ master ]
 
 env:
-  REGION_ID: cn-hangzhou
-  REGISTRY: registry.cn-hangzhou.aliyuncs.com
+  REGION_ID: cn-beijing
+  REGISTRY: registry.cn-beijing.aliyuncs.com
   NAMESPACE: ijx-static
   IMAGE: helm-wrapper
   TAG: ${{ github.sha }}
+  ALIYUN_REGISTRY_USER: "${{ secrets.ALIYUN_REGISTRY_USER }}"
+  ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
 
-  ACR_EE_REGISTRY: registry.cn-hangzhou.aliyuncs.com
+  ACR_EE_REGISTRY: registry.cn-beijing.aliyuncs.com
   ACR_EE_INSTANCE_ID: instanceID
   ACR_EE_NAMESPACE: ijx-static
   ACR_EE_IMAGE: helm-wrapper
@@ -52,8 +54,12 @@ jobs:
       id: make_build
       run: make build"
 
+    - name: Setup Docker buildx
+      uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
+
     - name: Build and push image to ACR EE
       run: |
+        docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $REGISTRY
         docker build -t "$ACR_EE_REGISTRY/$ACR_EE_NAMESPACE/$ACR_EE_IMAGE:$TAG" .
         docker push "$ACR_EE_REGISTRY/$ACR_EE_NAMESPACE/$ACR_EE_IMAGE:$TAG"
         echo "$ACR_EE_REGISTRY/$ACR_EE_NAMESPACE/$ACR_EE_IMAGE:$TAG"
