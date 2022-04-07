@@ -60,6 +60,15 @@ func RegisterRouter(router *gin.Engine) {
 		charts.DELETE("/upload/:chart", deleteChart)
 	}
 
+	// private repo charts
+	repo_charts := router.Group("/api/repo/charts")
+	{
+		// TODO: show private repo charts
+		// upload chart to private repo
+		repo_charts.POST("/upload", uploadRepoChart)
+
+	}
+
 	// helm release
 	releases := router.Group("/api/namespaces/:namespace/releases")
 	{

@@ -195,6 +195,14 @@ Body:
 
 > 当前该版本处于 Alpha 状态，还没有经过大量的测试，只是把相关的功能测试了一遍，你也可以在此基础上自定义适合自身的版本。
 
++ upload charts to repo
+    - `POST`
+    - `/api/repo/charts/upload`
+
+```
+curl -i -X POST -F"repoName=135884-ijx_uat" -F"chart=@test-chart-0.1.0.tgz" localhost:8082/api/repo/charts/upload
+```
+
 ### 响应
 
 为了简化，所有请求统一返回 200 状态码，通过返回 Body 中的 Code 值来判断响应是否正常：

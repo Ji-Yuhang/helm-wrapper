@@ -16,3 +16,5 @@ bin
 *.swp
 
 .idea
+helm-wrapper
+temp/

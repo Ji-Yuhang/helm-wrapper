@@ -1,5 +1,6 @@
 # FROM centos:7
-FROM alpine
+# FROM alpine
+FROM registry.cn-beijing.aliyuncs.com/ijx-public/helm-cm-push:3.8.1
 
 RUN apk --no-cache add ca-certificates
 
