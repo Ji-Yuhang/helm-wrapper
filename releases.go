@@ -218,6 +218,7 @@ func showReleaseInfo(c *gin.Context) {
 	name := c.Param("release")
 	namespace := c.Param("namespace")
 	info := c.Query("info")
+
 	if info == "" {
 		info = "values"
 	}
@@ -249,6 +250,17 @@ func showReleaseInfo(c *gin.Context) {
 		}
 
 		client := action.NewGetValues(actionConfig)
+		revision := c.Query("revision")
+		if revision != "" {
+			var version int
+			version, err = strconv.Atoi(revision)
+			if err != nil {
+				respErr(c, err)
+				return
+			}
+			client.Version = version
+		}
+
 		results, err := client.Run(name)
 		if err != nil {
 			respErr(c, err)

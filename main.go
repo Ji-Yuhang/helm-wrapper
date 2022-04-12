@@ -89,6 +89,7 @@ func main() {
 
 	// router
 	router := gin.Default()
+	router.Use(CORSMiddleware())
 	router.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "Welcome helm wrapper server")
 	})
