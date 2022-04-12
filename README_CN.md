@@ -141,6 +141,7 @@ Body:
 | Params | Description |
 | :- | :- |
 | info | 支持 hooks/manifest/notes/values 信息，默认为 values |
+| revision | release的修订版本号（仅当 info=values 时有效） 默认 "" |
 | output | values 输出格式（仅当 info=values 时有效），支持 json/yaml，默认为 json |
 
 + helm release history
